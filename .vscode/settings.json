@@ -1,5 +1,9 @@
 {
     "github.copilot.enable": {
         "dart": false
-    }
+    },
+    "cSpell.words": [
+        "cupertino",
+        "lato"
+    ]
 }
