@@ -25,7 +25,7 @@ class _AddExpense extends State<AddExpense> {
     super.dispose();
   }
 
-  _showDatePicker() async {
+  Future<void> _showDatePicker() async {
     final now = DateTime.now();
     final firstDate = DateTime(now.year - 1, now.month, now.day);
     final pickedDate = await showDatePicker(

@@ -34,11 +34,11 @@ class Expense {
     required this.category,
   }) : id = _uuid.v4();
 
-  get formattedDate {
+  String get formattedDate {
     return dateFormatter.format(date);
   }
 
-  get iconByCategory {
+  IconData get iconByCategory {
     switch (category) {
       case Category.food:
         return Icons.restaurant;
