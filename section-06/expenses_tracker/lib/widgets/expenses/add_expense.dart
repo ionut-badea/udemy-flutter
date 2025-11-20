@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:expenses_tracker/model/expense.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AddExpense extends StatefulWidget {
@@ -39,13 +42,26 @@ class _AddExpense extends State<AddExpense> {
     });
   }
 
-  void _submitExpense() {
-    final isTitleInvalid = _titleController.text.trim().isEmpty;
-    final amount = double.tryParse(_amountController.text);
-    final isAmountInvalid = amount == null || amount <= 0;
-    final isDateInvalid = _pickedDate == null;
-
-    if (isTitleInvalid || isAmountInvalid || isDateInvalid) {
+  void _showDialog() {
+    if (Platform.isIOS) {
+      showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text('Invalid form'),
+            content: Text('Please make sure a fields are completed!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Close'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
       showDialog(
         context: context,
         builder: (context) {
@@ -63,6 +79,17 @@ class _AddExpense extends State<AddExpense> {
           );
         },
       );
+    }
+  }
+
+  void _submitExpense() {
+    final isTitleInvalid = _titleController.text.trim().isEmpty;
+    final amount = double.tryParse(_amountController.text);
+    final isAmountInvalid = amount == null || amount <= 0;
+    final isDateInvalid = _pickedDate == null;
+
+    if (isTitleInvalid || isAmountInvalid || isDateInvalid) {
+      _showDialog();
     } else {
       final expese = Expense(
         title: _titleController.text,
@@ -78,7 +105,7 @@ class _AddExpense extends State<AddExpense> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(16, 48, 16, 16),
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
       child: Column(
         children: [
           TextField(
