@@ -6,13 +6,8 @@ import 'package:mealy/screens/meals.dart';
 import 'package:mealy/widgets/category_grid_item.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({
-    super.key,
-    required this.toggleMealFavoriteStatus,
-    required this.meals,
-  });
+  const CategoriesScreen({super.key, required this.meals});
 
-  final void Function(Meal meal) toggleMealFavoriteStatus;
   final List<Meal> meals;
 
   void _selectCategory(BuildContext context, Category category) {
@@ -23,11 +18,8 @@ class CategoriesScreen extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (BuildContext context) => MealsScreen(
-          title: category.title,
-          meals: mealsByCategory,
-          toggleMealFavoriteStatus: toggleMealFavoriteStatus,
-        ),
+        builder: (BuildContext context) =>
+            MealsScreen(title: category.title, meals: mealsByCategory),
       ),
     );
   }
