@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shopy/data/categories.dart';
 import 'package:shopy/models/category.dart';
 import 'package:shopy/models/grocery_item.dart';
+import 'package:http/http.dart' as http;
 
 class AddItem extends StatefulWidget {
   const AddItem({super.key});
@@ -18,13 +21,37 @@ class _AddItem extends State<AddItem> {
   String _name = '';
   int _quantity = 1;
   Category _category = categories[Categories.vegetables]!;
+  bool _isSending = false;
 
-  void _saveItem() {
+  void _resetForm() {
+    _keyForm.currentState!.reset();
+  }
+
+  void _saveItem() async {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
+      final url = Uri.https(
+        'udemy-flutter-shopy-default-rtdb.europe-west1.firebasedatabase.app',
+        'shopping-list.json',
+      );
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'name': _name,
+          'quantity': _quantity,
+          'category': _category.name,
+        }),
+      );
+
+      _isSending = true;
+
+      if (!mounted) return;
+
+      final String id = json.decode(response.body)['name'];
       Navigator.of(context).pop(
         GroceryItem(
-          id: DateTime.now().toString(),
+          id: id,
           name: _name,
           quantity: _quantity,
           category: _category,
@@ -115,8 +142,14 @@ class _AddItem extends State<AddItem> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  TextButton(onPressed: () {}, child: Text('Reset')),
-                  ElevatedButton(onPressed: _saveItem, child: Text('Save')),
+                  TextButton(
+                    onPressed: _isSending ? null : _resetForm,
+                    child: Text('Reset'),
+                  ),
+                  ElevatedButton(
+                    onPressed: _isSending ? null : _saveItem,
+                    child: Text('Save'),
+                  ),
                 ],
               ),
             ],
