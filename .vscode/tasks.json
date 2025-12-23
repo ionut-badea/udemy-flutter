@@ -1,0 +1,31 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "section-13: watch build_runner",
+            "type": "shell",
+            "command": "dart",
+            "args": [
+                "run",
+                "build_runner",
+                "watch",
+                "--delete-conflicting-outputs"
+            ],
+            "isBackground": true,
+            "options": {
+                "cwd": "${workspaceFolder}/section-13/placerr"
+            },
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "^(.*)$",
+                    "file": 1
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "^.*",
+                    "endsPattern": "^.*Build complete.*"
+                }
+            }
+        }
+    ]
+}

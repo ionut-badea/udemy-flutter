@@ -1,0 +1,10 @@
+# Flutter Udemy Course - Project Tasks
+
+[tasks.list-sections]
+description = "List all available section projects"
+run = "ls -la | grep section"
+
+[tasks.section-13-watch-build-runner]
+description = "Run build_runner on watch mode for section 13 placerr project"
+dir = "./section-13/placerr"
+run = "dart run build_runner watch --delete-conflicting-outputs"
